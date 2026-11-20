@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="400" viewBox="0 0 900 400" font-family="Segoe UI, Arial, sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6b7280"/></marker><marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto"><path d="M0 0L12 6L0 12z" fill="#ffffff" stroke="#6b7280"/></marker></defs><rect width="900" height="400" fill="#ffffff"/>
+<text x="20" y="28" font-size="15" font-weight="700" text-anchor="start" fill="#1f2937">Hình 4. Trạng thái của một lượt (Turn)</text>
+<text x="20" y="48" font-size="12" font-weight="400" text-anchor="start" fill="#4b5563">Không có đường tự động từ loi về cho: chạy lại luôn tạo lượt mới do chủ nhóm yêu cầu</text>
+<circle cx="50" cy="150" r="9" fill="#1f2937"/>
+<rect x="130" y="120" width="160" height="60" rx="8" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+<text x="210.0" y="146.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">cho</text>
+<text x="210.0" y="165.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">trong hàng đợi nhóm</text>
+<rect x="420" y="120" width="170" height="60" rx="8" fill="#e8effd" stroke="#2563eb" stroke-width="2"/>
+<text x="505.0" y="146.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">dang_chay</text>
+<text x="505.0" y="165.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">có pid, started_at</text>
+<rect x="720" y="50" width="150" height="60" rx="8" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+<text x="795.0" y="76.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">xong</text>
+<text x="795.0" y="95.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">có signal</text>
+<rect x="720" y="190" width="150" height="60" rx="8" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+<text x="795.0" y="216.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">loi</text>
+<text x="795.0" y="235.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">error_code</text>
+<rect x="130" y="270" width="160" height="56" rx="8" fill="#ffffff" stroke="#6b7280" stroke-width="1.2"/>
+<text x="210.0" y="294.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">huy</text>
+<text x="210.0" y="313.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">chủ nhóm dừng</text>
+<path d="M59 150 L130 150" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<path d="M290 150 L420 150" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/><text x="355" y="128" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">khoá nhóm rảnh +</text><text x="355" y="142" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">suất đồng thời</text>
+<path d="M590 140 L720 80" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/><text x="655" y="70" font-size="11.5" font-weight="400" text-anchor="end" fill="#4b5563">thoát, JSON hợp lệ</text>
+<path d="M590 165 L720 220" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/><text x="700" y="262" font-size="11.5" font-weight="400" text-anchor="end" fill="#4b5563">lỗi CLI / sai schema /</text><text x="700" y="276" font-size="11.5" font-weight="400" text-anchor="end" fill="#4b5563">quá giờ / khởi động lại</text>
+<path d="M210 180 L210 270" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/><text x="220" y="230" font-size="11.5" font-weight="400" text-anchor="start" fill="#4b5563">dừng / huỷ</text>
+<path d="M505 180 L505 298 L290 298" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/><text x="400" y="292" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">dừng: kill</text>
+<path d="M795 250 L795 360 L100 360 L100 168 L130 168" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/><text x="450" y="378" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">chủ nhóm “chạy lại” → tạo lượt MỚI</text>
+</svg>

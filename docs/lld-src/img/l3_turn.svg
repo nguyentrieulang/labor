@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="606" viewBox="0 0 1160 606" font-family="Segoe UI, Arial, sans-serif"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6b7280"/></marker><marker id="tri" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto"><path d="M0 0L12 6L0 12z" fill="#ffffff" stroke="#6b7280"/></marker></defs><rect width="1160" height="606" fill="#ffffff"/>
+<text x="20" y="28" font-size="15" font-weight="700" text-anchor="start" fill="#1f2937">Hình 3. Chạy một lượt agent</text>
+<line x1="90.0" y1="114" x2="90.0" y2="586" stroke="#9ca3af" stroke-dasharray="4 4"/>
+<rect x="15.0" y="70" width="150" height="44" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.2"/>
+<text x="90.0" y="88.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">Scheduler</text>
+<text x="90.0" y="107.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">worker</text>
+<line x1="286.0" y1="114" x2="286.0" y2="586" stroke="#9ca3af" stroke-dasharray="4 4"/>
+<rect x="211.0" y="70" width="150" height="44" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.2"/>
+<text x="286.0" y="96.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">ClaudeCodeRuntime</text>
+<line x1="482.0" y1="114" x2="482.0" y2="586" stroke="#9ca3af" stroke-dasharray="4 4"/>
+<rect x="407.0" y="70" width="150" height="44" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.2"/>
+<text x="482.0" y="88.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">WorkspaceStore</text>
+<text x="482.0" y="107.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">data/ + workspace</text>
+<line x1="678.0" y1="114" x2="678.0" y2="586" stroke="#9ca3af" stroke-dasharray="4 4"/>
+<rect x="603.0" y="70" width="150" height="44" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.2"/>
+<text x="678.0" y="88.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">claude.exe -p</text>
+<text x="678.0" y="107.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">tiến trình con</text>
+<line x1="874.0" y1="114" x2="874.0" y2="586" stroke="#9ca3af" stroke-dasharray="4 4"/>
+<rect x="799.0" y="70" width="150" height="44" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.2"/>
+<text x="874.0" y="88.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">docx_mcp</text>
+<text x="874.0" y="107.0" font-size="11.5" font-weight="400" text-anchor="middle" fill="#4b5563">tiến trình con</text>
+<line x1="1070.0" y1="114" x2="1070.0" y2="586" stroke="#9ca3af" stroke-dasharray="4 4"/>
+<rect x="995.0" y="70" width="150" height="44" rx="8" fill="#f3f4f6" stroke="#6b7280" stroke-width="1.2"/>
+<text x="1070.0" y="96.0" font-size="13" font-weight="600" text-anchor="middle" fill="#1f2937">Threads + Policy</text>
+<path d="M90.0 148 L482.0 148" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="286.0" y="142" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">1. kiểm băm decisions/ với bản gốc</text>
+<path d="M90.0 182 L286.0 182" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="188.0" y="176" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">2. run(TurnRequest) – đã giữ khoá nhóm + suất đồng thời</text>
+<path d="M286.0 216 L482.0 216" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="384.0" y="210" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">3. ghi system.md, settings.json, mcp.json của lượt</text>
+<path d="M286.0 250 L678.0 250" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="482.0" y="244" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">4. spawn trong Job Object; prompt qua stdin; cwd = workspace</text>
+<path d="M678.0 284 L874.0 284" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="776.0" y="278" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">5. khởi động theo --mcp-config (gốc = workspace)</text>
+<path d="M678.0 318 L874.0 318" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="776.0" y="312" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">6. docx_read / docx_build (tự kiểm đường dẫn)</text>
+<path d="M678.0 352 L286.0 352" fill="none" stroke="#6b7280" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="482.0" y="346" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">7. JSON kết quả: structured_output, session_id, cost, denials</text>
+<path d="M286.0 386 L482.0 386" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="384.0" y="380" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">8. liệt kê file đổi trong output/, review/</text>
+<path d="M286.0 420 L90.0 420" fill="none" stroke="#6b7280" stroke-width="1.3" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="188.0" y="414" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">9. TurnResult (ok | loi + error_code)</text>
+<path d="M90.0 454 L1070.0 454" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="580.0" y="448" font-size="11.5" font-weight="400" text-anchor="middle" fill="#1f2937">10. handle_result: kiểm tín hiệu → lượt mới / leo thang / review / đạt</text>
+<path d="M90.0 480 L120.0 480 L120.0 498 L94.0 498" fill="none" stroke="#6b7280" stroke-width="1.3" marker-end="url(#arr)"/>
+<text x="128.0" y="493" font-size="11.5" font-weight="400" text-anchor="start" fill="#1f2937">11. nhả khoá nhóm; lấy lượt kế tiếp</text>
+<rect x="30.0" y="516" width="1100.0" height="26" rx="4" fill="#fff8e1" stroke="#d4a72c"/>
+<text x="580.0" y="534" font-size="11.5" font-weight="600" text-anchor="middle" fill="#1f2937">Quá giờ → huỷ Job Object (giết cả cây tiến trình), lượt = loi, không tự chạy lại</text>
+</svg>

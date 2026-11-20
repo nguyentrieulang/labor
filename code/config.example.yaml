@@ -1,0 +1,29 @@
+instance:
+  data_dir: C:/Works/Labour/data            # ngoài mọi workspace
+  workspaces_dir: C:/Works/Labour/workspaces
+telegram:
+  bots:                                     # bể bot; token đọc từ biến môi trường
+    - {username: labour_bot1, token_env: BOT1_TOKEN}
+    - {username: labour_bot2, token_env: BOT2_TOKEN}
+    - {username: labour_bot3, token_env: BOT3_TOKEN}
+    - {username: labour_bot4, token_env: BOT4_TOKEN}
+  poll_timeout_s: 30
+users:
+  - {tg_user_id: 123456789, name: "Chủ dự án", admin: true, can_create_group: true}
+limits:
+  max_concurrent_turns: 3                   # giữa các nhóm (AD-22)
+  turn_timeout_s: 900
+  ask_cap: 3
+  review_cap: 3
+  cli_turn_cap_default: 12                  # câu hỏi mở HLD – cấu hình được theo nhóm
+  file_in_max_mb: 20
+  outbox_min_interval_s: 3                  # mỗi chat
+claude:
+  exe: "%APPDATA%/npm/node_modules/@anthropic-ai/claude-code/bin/claude.exe"
+  pinned_version: "2.1.328"                 # khởi động: so với `claude.exe --version`, lệch thì không chạy lượt
+  model_default: sonnet
+  model_light: haiku                        # lượt diễn giải vai
+  max_agent_turns: 20                       # --max-turns của mỗi lượt
+providers:
+  noi_bo: [claude]                          # AD-21
+  thoai_mai: [claude, grok, gemini]

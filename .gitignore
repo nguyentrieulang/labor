@@ -1,0 +1,38 @@
+# --- Bí mật và cấu hình máy chạy (KHÔNG BAO GIỜ commit) ---
+.env
+config.yaml
+
+# --- Dữ liệu khi chạy: CSDL, audit, workspace của nhóm ---
+data/
+workspaces/
+*.db
+*.db-wal
+*.db-shm
+
+# --- Python ---
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+dist/
+
+# --- Tài liệu: chỉ giữ bản mới nhất ---
+docs/*.docx
+!docs/2026-11-19-HLD-agent-team-v2.2-phuong-an-A-v0.6.docx
+!docs/2026-11-19-LLD-agent-team-v2.2-v0.2.docx
+docs/lld-src/img/*.html
+
+# --- Spike: giữ script, README, kết quả; bỏ thư mục thử nghiệm ---
+spike/*/lab/
+
+# --- Editor, hệ điều hành, file tạm của Word ---
+.vscode/
+.idea/
+.cursor/
+~$*
+Thumbs.db
+desktop.ini
