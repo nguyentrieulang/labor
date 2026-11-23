@@ -6,14 +6,14 @@ Labour là hệ thống đội AI agent làm việc trong nhóm Telegram: chủ 
 
 - Mỗi lần bàn giao một bản, số tăng dần: **1.1, 1.2, 1.3, …** Mỗi bản thường ứng với một giai đoạn của lộ trình.
 - Sửa lỗi cho một bản đã phát hành thì thêm chữ cái, ví dụ **1.1a**. Trong `pyproject.toml` ghi là `1.1.post1` (chuẩn Python hiểu `1.1a` là bản thử trước 1.1).
-- Mỗi bản có git tag cùng tên trong repo `code/`. Xem toàn bộ thay đổi của một bản: `git diff 1.1 1.2`.
+- Mỗi bản có git tag cùng tên trong repo `C:\Works\Labour` (mã nằm trong `code/`), bắt đầu từ `1.1a`; bản 1.1 không có tag. Xem toàn bộ thay đổi của một bản: `git diff 1.1a 1.2 -- code`.
 
 ## Danh sách bản
 
 | Bản | Ngày | Giai đoạn | Nội dung | Trạng thái |
 |---|---|---|---|---|
 | [1.1](RELEASE_NOTES_1.1.md) | 20/11/2026 | P1 – Nền móng | CSDL, nhận tin Telegram, đăng ký nhóm, hiểu ý chủ nhóm, lệnh chat. Chưa gọi AI | thay bằng 1.1a |
-| [1.1a](RELEASE_NOTES_1.1a.md) | 20/11/2026 | P1 – Nền móng | Sửa lỗi sau review 1.1: luật hiểu ý quá rộng, chọn bot hệ thống, tên bot viết hoa, lệnh cho bot ngoài bể, chia tin dài, `/thanhvien bo` | chờ nghiệm thu Telegram |
+| [1.1a](RELEASE_NOTES_1.1a.md) | 20/11/2026 | P1 – Nền móng | Sửa lỗi sau review 1.1: luật hiểu ý quá rộng, chọn bot hệ thống, tên bot viết hoa, lệnh cho bot ngoài bể, chia tin dài, `/thanhvien bo`; review lần 2: “huy động”, “không đặt”, “chót” không bị đoán nhầm | chờ nghiệm thu Telegram |
 
 ## Các bản dự kiến
 

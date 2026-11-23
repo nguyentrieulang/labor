@@ -5,7 +5,7 @@
 | Bản | 1.1a – bản sửa lỗi của 1.1 |
 | Giai đoạn | P1 – Nền móng |
 | Ngày | 20/11/2026 |
-| Trạng thái | 181 test tự động đạt; **chờ nghiệm thu với Telegram thật** |
+| Trạng thái | 190 test tự động đạt; **chờ nghiệm thu với Telegram thật** |
 | Tag git | `1.1a` |
 | Bản trước | [1.1](RELEASE_NOTES_1.1.md) |
 
@@ -31,6 +31,18 @@ Gán skill, đổi provider, chốt, giao vai và sửa vai giờ chỉ được
 
 Đổi provider phải là cả câu (“@bot2 dùng gemini nhé” vẫn được). Chữ “bot” không còn được hiểu là “bớt”.
 
+Sửa thêm sau review lần 2 (23/11/2026): chữ không dấu hoặc gần giống không còn bị đoán thành dừng, mở lại, chốt.
+
+| Câu | Trước | Bây giờ |
+|---|---|---|
+| reply trong việc: “huy động thêm dữ liệu từ phòng B” | dừng | giao việc |
+| reply tin ĐẠT: “không đặt tên file kiểu này nữa nhé” | mở lại | giao việc |
+| @bot1 chót lại số liệu | chốt | giao việc |
+| reply trong việc: “huy đi”, “huy viec”, “hủy, làm cái khác” | dừng | dừng (không đổi) |
+| reply tin ĐẠT: “bản này không đạt” | mở lại | mở lại (không đổi) |
+
+“huy” không dấu chỉ được hiểu là huỷ khi cả câu là lệnh huỷ; “huỷ / hủy / dừng” có dấu vẫn nhận ở đầu câu.
+
 ### 2. Chọn bot hệ thống khi gõ `/start` không kèm tên bot
 Ở bản 1.1, cả 4 bot cùng nhận `/start`, và bot nào xử lý trước thì thành bot hệ thống. Bot đó có thể không phải admin, nên không ghim được tin.
 Giờ hệ thống kiểm quyền cả 4 bot trước, rồi chọn bot đầu tiên theo thứ tự trong `config.yaml` mà là admin có quyền ghim. Nếu không bot nào đủ quyền thì chọn bot đầu tiên có trong nhóm và báo thiếu quyền. `/start@tên_bot` vẫn chọn đúng bot được gọi.
@@ -51,7 +63,10 @@ Lệnh bỏ người khỏi nhóm giờ là `/thanhvien bo`, để không nhầm
 
 ## Sửa release note bản 1.1
 
-Release note 1.1 có bốn chỗ ghi sai so với mã. Các chỗ này đã được sửa trong file [RELEASE_NOTES_1.1.md](RELEASE_NOTES_1.1.md):
+Release note 1.1 có các chỗ ghi sai so với mã. Các chỗ này đã được sửa trong file [RELEASE_NOTES_1.1.md](RELEASE_NOTES_1.1.md):
+- (review lần 2) Không có tag `1.1`, và mã bản 1.1 không được commit riêng nên không xem lại được; mọi lệnh git dùng `1.1` đã bỏ.
+- (review lần 2) “Có dấu hay không dấu đều được”: các từ bỏ dấu đổi nghĩa phải gõ có dấu.
+- (review lần 2) Cổng chặn Nội bộ chỉ kiểm mã mẫu; CSDL `group_log` có lưu nguyên văn tin (audit thì không).
 - Tin dài hơn 4 096 ký tự: ở 1.1 chưa chia (bật ở 1.1a).
 - “Khi mơ hồ, hệ thống không đoán”: ở 1.1 không đúng với câu giao việc thông thường (sửa ở 1.1a, mục 1 trên).
 - `/gemini` ở nhóm Nội bộ trả lời “Lệnh này chỉ dùng ở nhóm Thoải mái”; câu “Provider chưa hỗ trợ ở bản này” chỉ có ở nhóm Thoải mái.
@@ -70,7 +85,7 @@ Không đổi CSDL, không đổi config. Lấy mã mới rồi chạy lại:
 ```powershell
 cd C:\Works\Labour\code
 python -m uv sync
-python -m uv run pytest -q                              # 181 đạt, 2 bỏ qua
+python -m uv run pytest -q                              # 190 đạt, 2 bỏ qua
 python -m uv run python -X utf8 -m labour.app
 ```
 
@@ -91,7 +106,7 @@ Giống bản 1.1, sửa bước 2 và thêm bước 7, 8:
 
 | Sửa | File |
 |---|---|
-| Luật hiểu ý (luật 6–10 đứng đầu câu) | `labour/core/intents.py` |
+| Luật hiểu ý (luật 6–10 đứng đầu câu; “huy”, “không đặt”, “chót” không bị đoán nhầm) | `labour/core/intents.py` |
 | Chọn bot hệ thống, kiểm quyền trước transaction | `labour/core/groups.py` |
 | Username bot chữ thường | `labour/app/config.py` |
 | Bỏ qua lệnh cho bot ngoài bể; tin lỗi không bỏ tin sau | `labour/core/ingest.py` |
@@ -103,8 +118,9 @@ Trong `pyproject.toml`, bản 1.1a ghi là `1.1.post1`, vì theo chuẩn số b�
 
 ## Kiểm thử
 
-181 test tự động đạt (bản 1.1: 163), 2 test Telegram thật bỏ qua vì chưa có token. Test mới:
+190 test tự động đạt (bản 1.1: 163), 2 test Telegram thật bỏ qua vì chưa có token. Test mới:
 - 10 câu nhận diện ý, trong đó có đủ 5 câu reviewer nêu (phải ra giao việc).
+- 9 câu nhận diện ý từ review lần 2: “huy động”, “không đặt”, “chót”, “chọt” không bị đoán nhầm; “huy đi”, “bản này không đạt” vẫn đúng.
 - `/start` không kèm tên bot chọn bot admin đầu tiên, không phải bot nhận tin; không có bot admin thì chọn bot đầu tiên trong nhóm và báo thiếu quyền.
 - Tên bot viết hoa hoặc có `@` trong config; trùng tên khác hoa/thường bị báo lỗi.
 - `/baomat@bot_khac` không đổi mức bảo mật; `/status@labour_bot3` vẫn được trả lời.
@@ -120,4 +136,4 @@ Trong `pyproject.toml`, bản 1.1a ghi là `1.1.post1`, vì theo chuẩn số b�
 
 ## Xem mã
 
-`git diff 1.1 1.1a` – toàn bộ thay đổi so với bản 1.1.
+Mã bản 1.1 không được commit riêng nên không có `git diff 1.1 1.1a`. Xem mã bản này: `git ls-tree -r --name-only 1.1a code` (repo ở `C:\Works\Labour`). Từ bản sau: `git diff 1.1a 1.2 -- code`.

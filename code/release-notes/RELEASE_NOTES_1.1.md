@@ -1,6 +1,6 @@
 # Labour – Bản 1.1: Nền móng (giai đoạn P1)
 
-> **Đã có bản sửa lỗi [1.1a](RELEASE_NOTES_1.1a.md); nghiệm thu bằng bản 1.1a.** Các chỗ ghi sai trong file này đã được sửa, đánh dấu “(sửa sau review)”.
+> **Đã có bản sửa lỗi [1.1a](RELEASE_NOTES_1.1a.md); nghiệm thu bằng bản 1.1a.** Các chỗ ghi sai trong file này đã được sửa, đánh dấu “(sửa sau review)”. Mã bản 1.1 không còn trong git; các lệnh và số test bên dưới chỉ để tham khảo.
 
 | | |
 |---|---|
@@ -8,7 +8,7 @@
 | Giai đoạn | P1 – Nền móng |
 | Ngày | 20/11/2026 |
 | Trạng thái | Xong mã, 163 test tự động đạt; **chờ nghiệm thu với Telegram thật** |
-| Tag git | `1.1` |
+| Tag git | không có (sửa sau review): mã 1.1 không được commit riêng; repo chỉ có mã 1.1a, tag `1.1a` |
 | Bản trước | — (bản đầu) |
 
 ## Tóm tắt
@@ -38,12 +38,12 @@ Bản này dựng nền cho cả hệ thống. Labour đã nhận tin từ một
 | Xác nhận | reply “ok”, “đồng ý” vào tin chờ xác nhận |
 | Đạt / mở lại | reply “Đạt!” vào tin của việc; reply “không đạt…” vào tin ĐẠT |
 | Chạy lại / dừng | reply “chạy lại” vào tin lỗi; “dừng”, “huỷ” trong một việc |
-| Gán skill / đổi provider | “@bot2 dùng thêm skill X”; “@bot2 chuyển sang gemini” |
+| Gán skill / đổi provider | “@bot2 dùng thêm skill bao-cao-doi-tac”; “@bot2 chuyển sang gemini” |
 | Chốt quyết định | “@bot1 chốt phương án B” |
 | Giao vai / sửa vai | “@bot1 giao vai: phân tích yêu cầu”; “@bot2 thêm việc phản biện” |
 | Giao việc | “@bot1 soạn bảng phản hồi…”, hoặc reply vào tin của bot |
 
-Gõ có dấu hay không dấu đều được. Các từ mà bỏ dấu sẽ đổi nghĩa thì được phân biệt (đúng / dừng / dùng, bỏ / bộ, đổi / đối, đạt / đặt, vai / vài). (sửa sau review) Luật ở bản này còn quá rộng: câu giao việc có chữ “việc”, “dùng claude”, “chốt” ở giữa câu bị hiểu nhầm thành sửa vai, đổi provider, chốt; đã sửa ở 1.1a. Ở bản này hệ thống mới nhận ra ý và ghi lại; hành động tương ứng có từ bản 1.2.
+Phần lớn câu gõ có dấu hay không dấu đều được. Các từ mà bỏ dấu sẽ đổi nghĩa thì phải gõ có dấu (đúng / dừng / dùng, bỏ / bộ, đổi / đối, vai / vài); ví dụ “dung lai” không được hiểu là dừng. (sửa sau review) Luật ở bản này còn quá rộng: câu giao việc có chữ “việc”, “dùng claude”, “chốt” ở giữa câu bị hiểu nhầm thành sửa vai, đổi provider, chốt; “huy động…” bị hiểu là dừng; “không đặt…” (reply tin ĐẠT) bị hiểu là mở lại; “chót” bị hiểu là chốt. Tất cả đã sửa ở 1.1a. Ở bản này hệ thống mới nhận ra ý và ghi lại; hành động tương ứng có từ bản 1.2.
 
 ### 4. Lệnh trên chat
 
@@ -59,10 +59,11 @@ Gõ có dấu hay không dấu đều được. Các từ mà bỏ dấu sẽ đ
 Thành viên thường gõ lệnh của chủ nhóm sẽ nhận “Lệnh này chỉ dành cho chủ nhóm”, và không có gì thay đổi.
 
 ### 5. Bảo mật nhóm Nội bộ
-- Ở nhóm Nội bộ, bot chỉ được gửi tin dựng từ **mẫu cố định** (T01–T15 và tin hệ thống). Mọi tin khác bị chặn ngay trước khi gửi.
+- Ở nhóm Nội bộ, bot chỉ được gửi tin dựng từ **mẫu cố định** (T01–T15 và tin hệ thống). Tin không có mã mẫu bị chặn ngay trước khi gửi. (sửa sau review) Cổng chặn chỉ kiểm mã mẫu, không kiểm nội dung; nội dung đúng là nhờ mã lõi chỉ dựng tin bằng `render()`.
 - Tên file hiện trên chat được chuẩn hoá về ký tự an toàn, tối đa 60 ký tự.
 - File gửi vào nhóm Nội bộ bị từ chối.
 - Nhật ký audit (`data/audit/audit-YYYY-MM.jsonl`) không bao giờ chứa nội dung tin hay tài liệu.
+- (sửa sau review) CSDL `data/labour.db` (bảng `group_log`) **có** lưu nguyên văn mọi tin trong nhóm đã đăng ký, kể cả nhóm Nội bộ, để hiểu reply và gom ngữ cảnh. Cần bảo vệ thư mục `data/` như tài liệu nội bộ.
 
 ### 6. Gửi tin ổn định
 - Mỗi nhóm chat: hai tin cách nhau ít nhất 3 giây. Khi Telegram báo gửi quá nhanh thì chờ rồi gửi lại.
@@ -140,4 +141,4 @@ Các ca quan trọng: một tin qua 4 bot đồng thời chỉ xử lý một l�
 
 ## Xem mã
 
-Bản đầu tiên, toàn bộ mã trong repo: `git ls-tree -r --name-only 1.1` (danh sách file) hoặc `git log --stat 1.1` (từng commit). (sửa sau review)
+(sửa sau review) Mã bản 1.1 không được commit riêng nên không xem lại được trong git, cũng không có tag `1.1`. Repo (`C:\Works\Labour`, mã nằm trong `code/`) chỉ có mã từ bản 1.1a: `git ls-tree -r --name-only 1.1a code` (danh sách file).

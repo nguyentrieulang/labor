@@ -72,6 +72,15 @@ CASES = [
     ("@labour_bot3 đổi font cho bảng nhiệm vụ", [B3], None, set(), "giao_viec"),
     ("@labour_bot2 viết hướng dẫn dùng skill bao-cao", [B2], None, {B2}, "giao_viec"),
     ("@labour_bot2 dùng gemini nhé", [B2], None, {B2}, "doi_provider"),
+    # review 1.1a: chữ không dấu / chữ gần giống không được đoán thành dừng, mở lại, chốt
+    ("huy động thêm dữ liệu từ phòng B", [], T("dang_lam"), set(), "giao_viec"),   # huy động ≠ huỷ
+    ("@labour_bot2 huy động thêm dữ liệu", [B2], T("dang_lam"), {B2}, "giao_viec"),
+    ("huy đi", [], T("dang_lam"), set(), "dung"), ("huy viec", [], T("dang_lam"), set(), "dung"),
+    ("hủy, làm cái khác", [], T("dang_lam"), set(), "dung"),                      # có dấu: vẫn nhận đầu câu
+    ("không đặt tên file kiểu này nữa nhé", [], D, set(), "giao_viec"),            # đặt ≠ đạt: không mở lại
+    ("bản này không đạt", [], D, set(), "mo_lai"),
+    ("@labour_bot1 chót lại số liệu", [B1], None, {B1}, "giao_viec"),              # chót ≠ chốt
+    ("@labour_bot1 chọt vào mục 2", [B1], None, {B1}, "giao_viec"),
     # 11 giao việc
     ("@labour_bot1 soạn bảng phản hồi từ input/nhan-xet.docx", [B1], None, {B1}, "giao_viec"),
     ("@labour_bot1 @labour_bot2 cùng xem mục 4", [B1, B2], None, {B1, B2}, "giao_viec"),

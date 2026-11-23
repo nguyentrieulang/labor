@@ -1,6 +1,7 @@
 """Nhận diện ý của tin chủ nhóm – 12 luật tất định, xét theo thứ tự (LLD 7.3).
 
-Từ mà bỏ dấu đổi nghĩa (đúng/dừng/dùng, bỏ/bộ, đổi/đối, vai/vài, đạt/đặt) khớp trên chữ còn dấu `L`.
+Từ mà bỏ dấu đổi nghĩa (đúng/dừng/dùng, bỏ/bộ, đổi/đối, vai/vài, đạt/đặt, chốt/chót, huỷ/huy động) khớp trên
+chữ còn dấu `L`; chữ không dấu chỉ nhận ở dạng không lẫn được.
 Luật 6–10 chỉ nhận lệnh đứng ngay đầu câu (sau phần nhắc tên bot); còn lại là giao việc.
 """
 
@@ -14,10 +15,12 @@ from labour.ports.models import Intent, ReplyTarget
 
 R_CONFIRM = re.compile(r"^(ok|okay|đồng ý|dong y|đúng|xác nhận|xac nhan)(\s+(rồi|roi|nhé|nhe|nha))?[\s.!]*$")
 R_DAT = re.compile(r"^(ok\s+)?(đạt|dat)(\s+(rồi|roi))?[\s.!]*$")
-R_STOP = re.compile(r"^(dừng|huỷ|hủy|huy|stop)\b")
+R_MO_LAI = re.compile(r"(?<!\w)(không đạt|khong dat)(?!\w)")
+# "huy" không dấu chỉ nhận khi cả câu là lệnh huỷ ("huy động…" là giao việc)
+R_STOP = re.compile(r"^(dừng|huỷ|hủy|stop)\b|^huy(\s+(đi|di|nhé|nhe|việc|viec|bỏ|bo))?[\s.!]*$")
 R_SKILL = re.compile(r"^(dùng|dung) (thêm |them )?skill ([a-z0-9-]{3,40})\b")
 R_PROVIDER = re.compile(r"^(dùng|dung|chuyển sang|chuyen sang) (claude|grok|gemini)(\s+(nhé|nhe|nha|đi|di))?[\s.!]*$")
-R_CHOT = re.compile(r"^chot\b")
+R_CHOT = re.compile(r"^(chốt|chot)\b")
 R_ROLE_WORD = re.compile(r"^(vai trò|vai tro|vai|nhiệm vụ|nhiem vu)\b")
 R_EDIT_ROLE = re.compile(r"^(thêm|bớt|bỏ|đổi|sửa|them|sua) (việc|vai|nhiệm vụ|viec|nhiem vu)\b")
 _LEAD_PUNCT = " ,:;.-–"
@@ -32,7 +35,7 @@ def classify(text: str, mentions: Sequence[str], reply: ReplyTarget | None,
 
     if rk in ("pending_vai", "pending_chot") and R_CONFIRM.match(L):
         return Intent("xac_nhan", M, confirm_kind="vai" if rk == "pending_vai" else "chot")
-    if rk == "dat_pin" and "khong dat" in F:
+    if rk == "dat_pin" and R_MO_LAI.search(L):
         return Intent("mo_lai", M)
     if rk == "msg" and reply.thread_status in ("dang_lam", "cho_nguoi") and R_DAT.match(L):
         return Intent("dat", M)
@@ -45,7 +48,7 @@ def classify(text: str, mentions: Sequence[str], reply: ReplyTarget | None,
             return Intent("gan_skill", M, skill=m.group(3))
         if m := R_PROVIDER.search(L):
             return Intent("doi_provider", M, provider=m.group(2))
-        if R_CHOT.search(F):
+        if R_CHOT.search(L):
             return Intent("chot", M)
         if L.startswith("giao vai") or (R_ROLE_WORD.match(L) and any(not has_role(b) for b in M)):
             return Intent("giao_vai", M)
