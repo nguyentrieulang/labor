@@ -104,3 +104,7 @@ async def test_rights_check_failure_does_not_block(svc, seeded):
     svc.channel.bot_rights = boom
     out = await svc.register(start(), owner(seeded))
     assert out[0].template_code == "S_REGISTERED" and "không kiểm được" in out[1].text
+
+
+async def test_start_in_basic_group_denied(svc, seeded):  # 1.1b
+    assert await svc.register(ev(chat_id=-778, chat_type="group", command="start"), owner(seeded)) == []

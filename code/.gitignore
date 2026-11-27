@@ -8,3 +8,4 @@ data/
 workspaces/
 .pytest_cache/
 config.yaml
+*.swp

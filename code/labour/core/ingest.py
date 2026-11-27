@@ -65,6 +65,9 @@ class Ingest:
             if moved:
                 self.audit.write("group_migrated", old_chat_id=e.chat_id, new_chat_id=e.migrate_to_chat_id)
             return
+        if e.chat_type == "group":
+            await self._basic_group(e)
+            return
 
         action: tuple | None = None
         async with st.write() as s:
@@ -119,6 +122,25 @@ class Ingest:
                     action = ("intent", group, thread_id, intent)
 
         await self._act(e, action)
+
+    async def _basic_group(self, e: MessageEvent) -> None:
+        """Nhóm thường: mỗi bot tự đánh số tin, nên không chống trùng theo message_id được (1.1b).
+        Không xử lý, không ghi group_log. Chỉ một bot (bot được gọi, hoặc bot đầu tiên trong config) ghi audit
+        và trả lời /start của người được tạo nhóm, để không ra 4 tin."""
+        if e.sender_is_bot or e.via_bot != (e.command_target or self.groups.pool[0]):
+            return
+        self._reject(e, "basic_group")
+        if e.command != "start":
+            return
+        with self.store.read() as s:
+            user = self.store.users.by_tg(s, e.sender_user_id)
+        if user is None or not user.can_create_group:
+            return
+        o = Outgoing(e.chat_id, e.via_bot, TEMPLATES["S_NEED_SUPERGROUP"], "S_NEED_SUPERGROUP", e.message_id)
+        try:
+            await self.outbox.send(o, None)
+        except Exception as ex:  # noqa: BLE001
+            self.audit.write("send_failed", group_id=None, template=o.template_code, error=type(ex).__name__)
 
     async def _act(self, e: MessageEvent, action: tuple | None) -> None:
         if action is None:

@@ -73,7 +73,7 @@ class FakeAudit:
 
 
 def ev(**kw) -> MessageEvent:
-    base = dict(chat_id=-100, message_id=1, via_bot="labour_bot1", chat_type="group", sender_user_id=111,
+    base = dict(chat_id=-100, message_id=1, via_bot="labour_bot1", chat_type="supergroup", sender_user_id=111,
                 sender_is_bot=False, text="", mentions=(), reply_to_message_id=None, file=None, is_command=False,
                 command=None, args=())
     base.update(kw)

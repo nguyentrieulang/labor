@@ -23,6 +23,8 @@ TEMPLATES: dict[str, str] = {
     "T14": "[{vai}] Tôi nhận vai {vai}{co_reviewer} – lời giao: “{trich}”",
     "T15": "[Hệ thống] Đã đóng việc #{thread_id} vì có việc mới – huỷ {k} lượt chờ",
     "S_REGISTERED": "[Hệ thống] Đã đăng ký nhóm – mức Nội bộ. Đổi: /baomat thoai_mai. Thư mục: {workspace}",
+    "S_NEED_SUPERGROUP": "[Hệ thống] Labour chỉ chạy trong siêu nhóm (supergroup). Chuyển nhóm: Cài đặt nhóm → "
+                         "Chat history for new members → Visible, rồi gõ lại /start",
     "S_BOT_RIGHTS": "[Hệ thống] Thiếu quyền: {details}",
     "S_LEVEL": "[Hệ thống] Mức bảo mật của nhóm: {level}",
     "S_MEMBER": "[Hệ thống] Thành viên {name}: {role}",

@@ -5,7 +5,7 @@
 | Bản | 1.1a – bản sửa lỗi của 1.1 |
 | Giai đoạn | P1 – Nền móng |
 | Ngày | 20/11/2026 |
-| Trạng thái | 190 test tự động đạt; **chờ nghiệm thu với Telegram thật** |
+| Trạng thái | 190 test tự động đạt; nghiệm thu Telegram thật lộ lỗi nhóm thường → thay bằng [1.1b](RELEASE_NOTES_1.1b.md) |
 | Tag git | `1.1a` |
 | Bản trước | [1.1](RELEASE_NOTES_1.1.md) |
 

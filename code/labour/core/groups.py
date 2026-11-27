@@ -37,7 +37,7 @@ class GroupService:
         return []
 
     async def register(self, e: MessageEvent, user: User | None) -> list[Outgoing]:
-        if e.chat_type not in ("group", "supergroup"):
+        if e.chat_type != "supergroup":  # 1.1b: nhóm thường không có số tin chung cho mọi bot
             return self._deny(e, "chat_type")
         if user is None or not user.can_create_group:
             return self._deny(e, "no_permission")

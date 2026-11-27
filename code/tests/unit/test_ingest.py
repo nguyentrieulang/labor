@@ -108,7 +108,7 @@ async def test_removed_member_rejected(app, group, user2):
 
 
 async def test_migrate_to_supergroup_keeps_group(app, group):
-    await app.ingest.on_event(ev(migrate_to_chat_id=-100999, sender_user_id=None))
+    await app.ingest.on_event(ev(chat_type="group", migrate_to_chat_id=-100999, sender_user_id=None))
     with app.store.read() as s:
         assert app.store.groups.by_chat(s, -100999).id == group.id
 
@@ -156,3 +156,36 @@ async def test_send_failure_does_not_drop_later_messages(app, monkeypatch):
 async def test_non_owner_cannot_create_turns_even_with_mention(app):
     await app.ingest.on_event(ev(sender_user_id=222, text="@labour_bot1 dừng", mentions=B1))
     assert app.handled == []
+
+
+# --- 1.1b: chỉ nhận siêu nhóm. Ở nhóm thường mỗi bot tự đánh số tin, nên không chống trùng theo message_id được.
+
+async def test_basic_group_start_answered_once_and_not_registered(app):
+    for i in range(1, 5):  # 4 bot cùng nhận, mỗi bot một số tin khác nhau
+        await app.ingest.on_event(ev(chat_id=-777, chat_type="group", message_id=10 + i, via_bot=f"labour_bot{i}",
+                                     command="start", chat_title="Nhóm thường"))
+    assert app.group_count() == 1
+    assert [o.template_code for o in app.outbox.sent] == ["S_NEED_SUPERGROUP"]
+    assert app.outbox.sent[0].bot == "labour_bot1" and app.outbox.sent[0].text == TEMPLATES["S_NEED_SUPERGROUP"]
+    assert app.last_rejection() == "basic_group"
+
+
+async def test_basic_group_start_with_target_answered_by_that_bot(app):
+    for i in range(1, 5):
+        await app.ingest.on_event(ev(chat_id=-777, chat_type="group", message_id=20 + i, via_bot=f"labour_bot{i}",
+                                     command="start", command_target="labour_bot3"))
+    assert [(o.bot, o.template_code) for o in app.outbox.sent] == [("labour_bot3", "S_NEED_SUPERGROUP")]
+
+
+async def test_basic_group_start_from_user_without_permission_silent(app):
+    await app.ingest.on_event(ev(chat_id=-777, chat_type="group", sender_user_id=222, command="start"))
+    assert app.outbox.sent == [] and app.group_count() == 1 and app.last_rejection() == "basic_group"
+
+
+async def test_basic_group_messages_not_logged_even_if_ids_collide(app, group):
+    # nhóm đã đăng ký (dữ liệu cũ) nhưng là nhóm thường: không xử lý, không ghi group_log, không lỗi
+    for i in range(1, 5):
+        await app.ingest.on_event(ev(chat_id=group.tg_chat_id, chat_type="group", message_id=7, via_bot=f"labour_bot{i}",
+                                     command="status", text="/status"))
+    assert app.outbox.sent == [] and app.log_count(message_id=7) == 0
+    assert [e for e, f in app.audit.events if f.get("reason") == "basic_group"] == ["update_rejected"]
