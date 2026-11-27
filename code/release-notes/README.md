@@ -15,7 +15,7 @@ Labour là hệ thống đội AI agent làm việc trong nhóm Telegram: chủ 
 | [1.1](RELEASE_NOTES_1.1.md) | 20/11/2026 | P1 – Nền móng | CSDL, nhận tin Telegram, đăng ký nhóm, hiểu ý chủ nhóm, lệnh chat. Chưa gọi AI | thay bằng 1.1a |
 | [1.1a](RELEASE_NOTES_1.1a.md) | 20/11/2026 | P1 – Nền móng | Sửa lỗi sau review 1.1: luật hiểu ý quá rộng, chọn bot hệ thống, tên bot viết hoa, lệnh cho bot ngoài bể, chia tin dài, `/thanhvien bo`; review lần 2: “huy động”, “không đặt”, “chót” không bị đoán nhầm | thay bằng 1.1b |
 | [1.1b](RELEASE_NOTES_1.1b.md) | 27/11/2026 | P1 – Nền móng | Sửa lỗi khi nghiệm thu Telegram thật: chỉ nhận siêu nhóm (nhóm thường làm sai chống trùng tin) | thay bằng 1.1c |
-| [1.1c](RELEASE_NOTES_1.1c.md) | 27/11/2026 | P1 – Nền móng | Sửa lỗi khi nghiệm thu: `/thanhvien them` lấy người cần thêm từ tin được reply (Telegram gửi kèm), thêm lại được người đã bỏ | chờ nghiệm thu bước 8 |
+| [1.1c](RELEASE_NOTES_1.1c.md) | 27/11/2026 | P1 – Nền móng | Sửa lỗi khi nghiệm thu: `/thanhvien them` lấy người cần thêm từ tin được reply (Telegram gửi kèm), thêm lại được người đã bỏ; gọi bằng @username | đạt nghiệm thu Telegram |
 
 ## Các bản dự kiến
 

@@ -5,7 +5,7 @@
 | Bản | 1.1c – bản sửa lỗi của 1.1b |
 | Giai đoạn | P1 – Nền móng |
 | Ngày | 27/11/2026 |
-| Trạng thái | 202 test tự động đạt; **chờ nghiệm thu bước 8 với Telegram thật** |
+| Trạng thái | 202 test tự động đạt; **nghiệm thu Telegram thật đạt** (27/11/2026, bước 2–8 trên siêu nhóm) |
 | Tag git | `1.1c` |
 | Bản trước | [1.1b](RELEASE_NOTES_1.1b.md) |
 
