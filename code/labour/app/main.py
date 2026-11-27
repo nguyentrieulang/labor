@@ -28,7 +28,7 @@ async def run(cfg_path: Path) -> None:
         for username, (_, can_read_all) in ids.items():
             if not can_read_all:
                 log.warning("@%s chưa tắt privacy mode – chỉ thấy tin nhắc tên / lệnh, trừ khi là admin nhóm", username)
-        app.audit.write("startup", bots=sorted(ids), version="1.1b")
+        app.audit.write("startup", bots=sorted(ids), version="1.1c")
         log.info("Labour đã chạy với %d bot", len(ids))
         await channel.start(app.ingest.on_event)
     finally:

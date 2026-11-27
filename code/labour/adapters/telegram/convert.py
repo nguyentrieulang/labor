@@ -32,6 +32,10 @@ def to_event(m: Message, via_bot: str, pool: set[str]) -> MessageEvent | None:
     if m.document is not None:
         file = IncomingFile(m.document.file_name or "file", m.document.file_size or 0, m.document.file_id)
 
+    r = m.reply_to_message
+    reply_author = r.from_user if r is not None else None
+    reply_to_user_id = reply_author.id if reply_author is not None and not reply_author.is_bot else None
+
     return MessageEvent(
         chat_id=m.chat.id,
         message_id=m.message_id,
@@ -49,4 +53,5 @@ def to_event(m: Message, via_bot: str, pool: set[str]) -> MessageEvent | None:
         command_target=target,
         chat_title=m.chat.title,
         migrate_to_chat_id=m.migrate_to_chat_id,
+        reply_to_user_id=reply_to_user_id,
     )

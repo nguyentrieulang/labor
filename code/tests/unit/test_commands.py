@@ -109,16 +109,26 @@ async def test_vai_empty(cmds, seeded, group):
 
 @pytest.mark.parametrize("word", ["bo", "bot"])
 async def test_thanhvien_bo_by_reply(cmds, seeded, group, word):
+    # 1.1c: người cần đổi lấy từ reply_to_message.from.id của Telegram, không tra group_log
     owner, u2 = users(seeded)
-    async with seeded.write() as s:
-        seeded.log.add(s, group.id, 77, "user", u2.id, "chat", "xin chào", None)
-    out = await run(cmds, group, owner, "thanhvien", word, reply_to_message_id=77)
+    out = await run(cmds, group, owner, "thanhvien", word, reply_to_message_id=77, reply_to_user_id=222)
     with seeded.read() as s:
         assert seeded.members.role_of(s, group.id, u2.id) == "da_bo"
     assert out[0].template_code == "S_MEMBER"
-    out = await run(cmds, group, owner, "thanhvien", "them", reply_to_message_id=77)
+    out = await run(cmds, group, owner, "thanhvien", "them", reply_to_message_id=88, reply_to_user_id=222)
     with seeded.read() as s:
         assert seeded.members.role_of(s, group.id, u2.id) == "thanh_vien"
+
+
+async def test_thanhvien_them_by_reply_to_message_sent_after_removal(cmds, seeded, group):
+    # lỗi nghiệm thu 1.1b: tin của người đã bỏ không có trong group_log, vẫn phải thêm lại được
+    owner, u2 = users(seeded)
+    async with seeded.write() as s:
+        seeded.members.set_role(s, group.id, u2.id, "da_bo")
+    out = await run(cmds, group, owner, "thanhvien", "them", reply_to_message_id=999, reply_to_user_id=222)
+    with seeded.read() as s:
+        assert seeded.members.role_of(s, group.id, u2.id) == "thanh_vien"
+    assert out[0].text == render("S_MEMBER", name=u2.display_name, role="thành viên")
 
 
 async def test_thanhvien_without_reply_shows_hint(cmds, seeded, group):
@@ -127,11 +137,16 @@ async def test_thanhvien_without_reply_shows_hint(cmds, seeded, group):
     assert "reply vào tin" in out[0].text and "them | bo" in out[0].text
 
 
+@pytest.mark.parametrize("reply_user", [None, 999])  # reply vào tin của bot / người không có trong config
+async def test_thanhvien_reply_to_bot_or_stranger_shows_hint(cmds, seeded, group, reply_user):
+    owner, _ = users(seeded)
+    out = await run(cmds, group, owner, "thanhvien", "bo", reply_to_message_id=50, reply_to_user_id=reply_user)
+    assert "reply vào tin" in out[0].text
+
+
 async def test_thanhvien_cannot_remove_owner(cmds, seeded, group):
     owner, _ = users(seeded)
-    async with seeded.write() as s:
-        seeded.log.add(s, group.id, 78, "user", owner.id, "chat", "x", None)
-    await run(cmds, group, owner, "thanhvien", "bot", reply_to_message_id=78)
+    await run(cmds, group, owner, "thanhvien", "bot", reply_to_message_id=78, reply_to_user_id=111)
     with seeded.read() as s:
         assert seeded.members.role_of(s, group.id, owner.id) == "chu"
 

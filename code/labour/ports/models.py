@@ -34,6 +34,7 @@ class MessageEvent:
     command_target: str | None = None
     chat_title: str | None = None
     migrate_to_chat_id: int | None = None
+    reply_to_user_id: int | None = None  # người viết tin gốc khi reply (Telegram gửi kèm); None nếu là bot
 
 
 @dataclass(frozen=True)

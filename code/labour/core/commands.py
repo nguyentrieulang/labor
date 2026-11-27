@@ -62,11 +62,12 @@ class Commands:
         hint = "S_MEMBER", render("S_MEMBER", name="?", role="reply vào tin của người đó rồi gõ /thanhvien them | bo")
         if action == "bot":
             action = "bo"
-        if action not in ("them", "bo") or e.reply_to_message_id is None:
+        if action not in ("them", "bo") or e.reply_to_user_id is None:
             return hint
         async with self.store.write() as s:
-            row = self.store.log.get(s, group.id, e.reply_to_message_id)
-            target = self.store.users.by_id(s, row.sender_id) if row and row.sender_kind == "user" and row.sender_id else None
+            # 1.1c: người viết tin gốc lấy từ Telegram (reply_to_message.from.id), không tra group_log:
+            # tin của người đã bỏ không được ghi vào group_log.
+            target = self.store.users.by_tg(s, e.reply_to_user_id)
             if target is None or not target.active:
                 return hint
             if target.id == group.owner_user_id:
