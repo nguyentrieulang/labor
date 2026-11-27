@@ -57,6 +57,11 @@ class Commands:
             return "T13", refusal("chi_trong_thoai_mai")
         return "T13", refusal("provider_chua_ho_tro")
 
+    @staticmethod
+    def _member_name(e: MessageEvent, target: User) -> str:
+        """@username Telegram (chỉ a-z, 0-9, _ nên an toàn cho mẫu tin); không có thì tên trong config."""
+        return f"@{e.reply_to_username}" if e.reply_to_username else target.display_name
+
     async def _thanhvien(self, group: Group, user: User, e: MessageEvent) -> tuple[str, str]:
         action = e.args[0].lower() if e.args else None
         hint = "S_MEMBER", render("S_MEMBER", name="?", role="reply vào tin của người đó rồi gõ /thanhvien them | bo")
@@ -71,12 +76,12 @@ class Commands:
             if target is None or not target.active:
                 return hint
             if target.id == group.owner_user_id:
-                return "S_MEMBER", render("S_MEMBER", name=target.display_name, role="chủ nhóm – không đổi")
+                return "S_MEMBER", render("S_MEMBER", name=self._member_name(e, target), role="chủ nhóm – không đổi")
             role = "thanh_vien" if action == "them" else "da_bo"
             self.store.members.set_role(s, group.id, target.id, role)
         self.audit.write("member_added" if action == "them" else "member_removed", group_id=group.id,
                          user_id=target.id, by_user_id=user.id)
-        return "S_MEMBER", render("S_MEMBER", name=target.display_name,
+        return "S_MEMBER", render("S_MEMBER", name=self._member_name(e, target),
                                   role="thành viên" if action == "them" else "đã bỏ khỏi nhóm")
 
     async def _vai(self, group: Group, user: User, e: MessageEvent) -> tuple[str, str]:

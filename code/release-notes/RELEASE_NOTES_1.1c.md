@@ -5,7 +5,7 @@
 | Bản | 1.1c – bản sửa lỗi của 1.1b |
 | Giai đoạn | P1 – Nền móng |
 | Ngày | 27/11/2026 |
-| Trạng thái | 200 test tự động đạt; **chờ nghiệm thu bước 8 với Telegram thật** |
+| Trạng thái | 202 test tự động đạt; **chờ nghiệm thu bước 8 với Telegram thật** |
 | Tag git | `1.1c` |
 | Bản trước | [1.1b](RELEASE_NOTES_1.1b.md) |
 
@@ -42,6 +42,12 @@ Bản 1.1c lấy thẳng `reply_to_message.from.id` từ Telegram:
 
 Không lưu thêm gì: tin của người đã bỏ vẫn không được ghi vào nhật ký, chỉ có audit `update_rejected` / `removed_member` như cũ. Người viết tin gốc do máy chủ Telegram gửi, nên không giả mạo được.
 
+### Tên trong câu trả lời của `/thanhvien`
+
+Bot gọi người được thêm hoặc bỏ bằng **username Telegram** lấy từ tin được reply (`reply_to_message.from.username`), ví dụ “[Hệ thống] Thành viên @ntlang: thành viên”. Người không đặt username thì dùng tên trong `config.yaml` (trường `name`).
+
+Username chỉ gồm chữ không dấu, số và `_` (Telegram kiểm), nên an toàn khi đưa vào mẫu tin ở nhóm Nội bộ. Tên hiển thị Telegram (`first_name`, `last_name`) thì người dùng đặt tuỳ ý, nên không dùng.
+
 ## Lưu ý
 
 - “Bỏ khỏi nhóm” trong Labour chỉ làm bot không nhận tin của người đó. Người đó **vẫn ở trong nhóm Telegram**. Muốn chặn hẳn thì xoá họ khỏi nhóm trên Telegram.
@@ -54,7 +60,7 @@ Không đổi CSDL, không đổi config, không cần xoá dữ liệu. Dừng 
 ```powershell
 cd C:\Works\Labour\code
 python -m uv sync
-python -m uv run pytest -q                              # 200 đạt, 2 bỏ qua
+python -m uv run pytest -q                              # 202 đạt, 2 bỏ qua
 python -m uv run python -X utf8 -m labour.app
 ```
 
@@ -63,7 +69,7 @@ python -m uv run python -X utf8 -m labour.app
 Người thứ hai (ID 5943471923) đang ở trạng thái đã bỏ.
 
 1. Người thứ hai gửi một tin bất kỳ → không bot nào trả lời (đã bỏ).
-2. Chủ nhóm reply vào tin vừa rồi, gõ `/thanhvien them` → “Thành viên Người thứ hai: thành viên”.
+2. Chủ nhóm reply vào tin vừa rồi, gõ `/thanhvien them` → “Thành viên @ntlang: thành viên”.
 3. Người thứ hai gõ `/vai` → có trả lời (đã là thành viên).
 4. Chủ nhóm reply một tin của người thứ hai, gõ `/thanhvien bo` → “… đã bỏ khỏi nhóm”; người thứ hai gõ `/vai` → im lặng.
 5. Reply lại tin bất kỳ của người thứ hai, `/thanhvien them` → thêm lại được.
@@ -73,15 +79,16 @@ Người thứ hai (ID 5943471923) đang ở trạng thái đã bỏ.
 
 | Sửa | File |
 |---|---|
-| `MessageEvent.reply_to_user_id` | `labour/ports/models.py` |
-| Lấy `reply_to_message.from.id` (bỏ qua khi tin gốc của bot) | `labour/adapters/telegram/convert.py` |
-| `/thanhvien` tìm người qua `users.by_tg(reply_to_user_id)`, không tra `group_log` | `labour/core/commands.py` |
+| `MessageEvent.reply_to_user_id`, `reply_to_username` | `labour/ports/models.py` |
+| Lấy `reply_to_message.from.id` và `.username` (bỏ qua khi tin gốc của bot) | `labour/adapters/telegram/convert.py` |
+| `/thanhvien` tìm người qua `users.by_tg(reply_to_user_id)`, không tra `group_log`; gọi bằng `@username` | `labour/core/commands.py` |
 | Số bản | `pyproject.toml` (`1.1.post3`), `labour/app/main.py` |
 
 ## Kiểm thử
 
-200 test tự động đạt (1.1b: 195), 2 test Telegram thật bỏ qua. Test mới hoặc sửa:
-- Chuyển tin: lấy được ID người viết tin gốc; tin gốc của bot thì không có ID.
+202 test tự động đạt (1.1b: 195), 2 test Telegram thật bỏ qua. Test mới hoặc sửa:
+- Chuyển tin: lấy được ID và username người viết tin gốc; tin gốc của bot thì không có.
+- `/thanhvien` gọi người bằng `@username`; không có username thì dùng tên trong config.
 - `/thanhvien them` reply tin gửi sau khi bị bỏ (không có trong `group_log`) → thêm lại được.
 - Reply tin của bot hoặc của người không có trong config → hiện hướng dẫn.
 - `/thanhvien bo` / `bot` / `them` và không bỏ được chủ nhóm: dùng ID người viết tin gốc thay vì `group_log`.

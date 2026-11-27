@@ -34,7 +34,9 @@ def to_event(m: Message, via_bot: str, pool: set[str]) -> MessageEvent | None:
 
     r = m.reply_to_message
     reply_author = r.from_user if r is not None else None
-    reply_to_user_id = reply_author.id if reply_author is not None and not reply_author.is_bot else None
+    human = reply_author if reply_author is not None and not reply_author.is_bot else None
+    reply_to_user_id = human.id if human else None
+    reply_to_username = human.username if human else None
 
     return MessageEvent(
         chat_id=m.chat.id,
@@ -54,4 +56,5 @@ def to_event(m: Message, via_bot: str, pool: set[str]) -> MessageEvent | None:
         chat_title=m.chat.title,
         migrate_to_chat_id=m.migrate_to_chat_id,
         reply_to_user_id=reply_to_user_id,
+        reply_to_username=reply_to_username,
     )

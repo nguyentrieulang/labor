@@ -131,6 +131,19 @@ async def test_thanhvien_them_by_reply_to_message_sent_after_removal(cmds, seede
     assert out[0].text == render("S_MEMBER", name=u2.display_name, role="thành viên")
 
 
+async def test_thanhvien_shows_telegram_username(cmds, seeded, group):
+    owner, u2 = users(seeded)
+    out = await run(cmds, group, owner, "thanhvien", "bo", reply_to_message_id=60, reply_to_user_id=222,
+                    reply_to_username="ntlang")
+    assert out[0].text == render("S_MEMBER", name="@ntlang", role="đã bỏ khỏi nhóm")
+
+
+async def test_thanhvien_without_username_uses_config_name(cmds, seeded, group):
+    owner, u2 = users(seeded)
+    out = await run(cmds, group, owner, "thanhvien", "bo", reply_to_message_id=61, reply_to_user_id=222)
+    assert out[0].text == render("S_MEMBER", name=u2.display_name, role="đã bỏ khỏi nhóm")
+
+
 async def test_thanhvien_without_reply_shows_hint(cmds, seeded, group):
     owner, _ = users(seeded)
     out = await run(cmds, group, owner, "thanhvien", "bo")

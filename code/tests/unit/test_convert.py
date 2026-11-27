@@ -74,8 +74,8 @@ def test_to_event_reply_id():
 def test_to_event_reply_author_id():  # 1.1c: lấy người viết tin gốc từ Telegram
     e = to_event(msg(text="/thanhvien them", reply_to_message={
         "message_id": 30, "date": 1763500000, "chat": GROUP, "text": "Test",
-        "from": {"id": 222, "is_bot": False, "first_name": "B"}}), "labour_bot1", POOL)
-    assert e.reply_to_message_id == 30 and e.reply_to_user_id == 222
+        "from": {"id": 222, "is_bot": False, "first_name": "B", "username": "ntlang"}}), "labour_bot1", POOL)
+    assert e.reply_to_message_id == 30 and e.reply_to_user_id == 222 and e.reply_to_username == "ntlang"
 
 
 def test_to_event_reply_to_bot_has_no_author_id():
